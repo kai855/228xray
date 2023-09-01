@@ -1,0 +1,61 @@
+        #联网检查
+
+networkCheck() {
+	checkStatus() {
+		checkVal="$1"
+		checkName="$2"
+		[ -z "$checkVal" ] && \
+			echo "\033[5m;41 \r            ❌  $checkName联网失败          " || \
+			echo "\033[5m;41 \r            ✅️  $checkName联网成功          "
+	}
+	for lineNum in `stty size`; do :;done
+	echo '\033[5;41m 正在测试DNS...'
+	for ntpIP in `./MLBox -timeout=5 -dns="-qtype=A -domain=cn.pool.ntp.org" | grep -v 'timeout' | grep -E '[1-9][0-9]{0,2}(\.[0-9]{1,3}){3}'`; do break;done
+	checkStatus "$ntpIP" 'DNS' true
+	echo '\033[5;43m 正在测试HTTP...'
+	httpsIP=`./MLBox -timeout=1 -http='http://182.254.116.116/d?dn=myip.ipip.net' 2>&1 | grep -Ev 'timeout|httpGetResponse'`
+	checkStatus "$httpsIP" 'HTTP' true
+	echo '\033[5;44m 正在测试HTTPS...'
+	myIP=`./MLBox -timeout=3 -http='http://182.254.116.116/d?dn=myip.ipip.net' 2>&1 | grep -Ev 'timeout|httpGetResponse'`
+	checkStatus "$myIP" 'HTTPS' true
+	echo '\033[5;46m 正在测试UDP...'
+	currentTime=`./MLBox -timeout=4 -ntp="$ntpIP" | grep -v 'timeout'`
+	checkStatus "$currentTime" 'UDP' false
+	
+}
+#脚本入口
+main() {
+	cd "${1%/*}"
+	chmod 777 *
+	
+	
+	case "$2" in
+		'stop')
+			
+		
+		;;
+		'start')
+			#echo "
+
+    echo ""
+    busybox pidof "tun2socks" >/dev/null && 
+
+    echo -e "\033[5;37m            ✔️  tun2socks状态   \033[0m" || echo -e "\033[5;37m            ✖️  tun2socks状态 \033[0m"
+    echo ""
+
+    busybox pidof "xray" >/dev/null && 
+
+    echo -e "\033[5;34m            ✔️  xray 运行状态   \033[0m" || echo -e "\033[5;34m            ✖️ xray 运行状态   \033[0m"
+    echo ""		
+			networkCheck
+			
+			#checkUpdate
+
+		;;
+		'status')
+			statusCheck
+		;;
+	esac
+}
+
+main "$0" "$1" 2>&1

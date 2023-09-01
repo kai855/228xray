@@ -1,0 +1,432 @@
+#!/system/bin/sh
+
+# 双服务器代理模式(gfw,cn)
+# gfw 国外服务器代理gfwlist,其他使用国内服务器
+# cn  国内服务器代理geoip:cn,geosite:cn,其他使用国外服务器
+proxy_mode="cn"
+
+# 流量探测 true/false
+sniffing="true"
+
+get_ip() {
+  server=${addr%:*}
+  if echo $server | grep -qE '[a-z\|A-Z]'; then
+    ip=`busybox timeout 1 busybox wget -qO- -T1 http://119.29.29.29/d?dn=$server | busybox cut -d';' -f1`
+    echo $ip | grep -q '\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}' || ip=""
+    if [ -z "$ip" ]; then
+      ip=`ping -c1 -W1 $server | grep 'PING' | busybox cut -d'(' -f2 |  busybox cut -d')' -f1`
+    fi
+  else
+    ip=$server
+  fi
+  addr=$ip:${addr#*:}
+}
+
+if [ "$useTun" = "1" ]; then
+udpInbound='
+    {
+      "tag": "udp-in",
+      "port": 1231,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "sniffing": {
+        "enabled": '$sniffing',
+        "destOverride": ["http","tls"]
+      }
+    }'
+else
+udpInbound='
+    {
+      "tag": "udp-in",
+      "port": 1231,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "network": "udp",
+        "followRedirect": true
+      },
+      "sniffing": {
+        "enabled": '$sniffing',
+        "destOverride": ["http","tls"]
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tproxy": "tproxy"
+        }
+      }
+    }'
+fi
+
+getOutboundObj() {
+[ -n "$3" ] && source ./节点/$3.ini
+if echo $method | grep -q ":"; then
+  param1=${method%:*}
+  param2=${method#*:}
+else
+  param1=$method
+fi
+
+if [ "$param2" = "tls" -o "$param2" = "xtls" ]; then
+if echo $host | grep -q ","; then
+  host_param1=${host%,*}
+  host_param2=${host#*,}
+  echo $host_param1 | grep -q "^domain:" && domain=${host_param1#*:}
+  echo $host_param2 | grep -q "^host:" && host=${host_param2#*:}
+else
+  # host可设置为 domain:baidu.com,host:qq.com的形式(tls下有用)
+  if echo $host | grep -q "^domain:"; then
+    domain=${host#*:}
+    host=""
+  else
+    domain=$host
+  fi
+fi
+
+[ -n "$domain" ] && serverName="\"$domain\""
+[ "$param2" = "xtls" ] && xtlsFlag="xtls"
+tlsSettingsObj=',
+        "security": "'$param2'",
+        "'$param2'Settings": {
+          "allowInsecure": true,
+          "serverName": '${serverName:-null}'
+        }'
+fi
+
+[ -n "$host" ] && wsHost="\"$host\""
+if [ "$param1" = "ws" ]; then
+network='ws'
+wsSettingsObj=',
+        "wsSettings": {
+          "path": "'${path:-/}'",
+          "headers": {
+            "Host": '${wsHost:-null}'
+          }
+        }'
+fi
+
+if [ "$param1" = "kcp" ]; then
+[ -n "$param2" ] && kcpType="\"$param2\""
+network='kcp'
+kcpSettingsObj=',
+        "kcpSettings": {
+          "mtu": 1350,
+          "tti": 50,
+          "uplinkCapacity": 12,
+          "downlinkCapacity": 100,
+          "congestion": true,
+          "readBufferSize": 5,
+          "writeBufferSize": 5,
+          "header": {
+            "type": "'none'"
+          }
+        }'
+fi
+
+if [ -n "$param2" -a "$param1" = "tcp" ]; then
+network='tcp'
+tcpOnly="yes"
+fi
+
+if [ -z "$network" ]; then
+network='tcp'
+tcpHttpSettingsObj=',
+        "tcpSettings": {
+          "header": { 
+            "type": "http",
+            "request": {
+              "version": "1.1",
+              "method": "'$param1'",
+              "path": "'$path'",
+              "headers": {
+                "Host": "'$host'"
+              }
+            }
+          }
+        }'
+fi
+
+get_ip
+[ -z "$ip" ] && return 111
+
+echo "${2}file"=$3 >> 核心/info
+echo "${2}addr"=$addr >> 核心/info
+if [ "$network" != "kcp" ]; then
+  [ -z "$tcpOnly" ] && echo "${2}path"=$path >> 核心/info
+  echo "${2}host"=$host >> 核心/info
+fi
+
+if [ "$protocol" != "vless" ]; then
+  protocol="vmess"
+  userSecurity=',
+            "alterId": '$alterId',
+            "security": "'$security'"'
+else
+  [ -z "$flow" ] && flow="xtls-rprx-origin"
+  if [ "$xtlsFlag" = "xtls" ]; then
+    xtlsflow=',
+            "flow": "'$flow'"'
+  fi
+  encryption=',
+            "encryption": "none"'
+fi
+echo "
+    {
+      \"tag\": \"$1\",
+      \"protocol\": \"$protocol\",
+      \"settings\": {
+        \"vnext\": [{
+          \"address\": \"${addr%:*}\",
+          \"port\": ${addr#*:},
+          \"users\": [{
+            \"id\": \"$uuid\"$userSecurity$xtlsflow$encryption
+          }]
+        }]
+      },
+      \"streamSettings\": {
+        \"network\": \"$network\"$tlsSettingsObj$wsSettingsObj$tcpHttpSettingsObj$kcpSettingsObj
+      }
+    },"
+}
+
+echo -n "" > 核心/info
+outboundObj1=`getOutboundObj proxy x $file1`
+[ "$?" = "111" ] && return 111
+[ -n "$file2" ] && outboundObj2=`getOutboundObj PROXY2 y $file2`
+[ "$?" = "111" ] && return 111
+
+if [ "$proxy_mode" = "cn" ]; then
+  outboundsObj=${outboundObj2}${outboundObj1}
+else
+  outboundsObj=${outboundObj1}${outboundObj2}
+fi
+
+getDNS() {
+source $1
+echo $DNS
+}
+
+getDNSObj() {
+if [ -n "$file2" ]; then
+DNS1=`getDNS ./节点/${file1}.ini`
+DNS2=`getDNS ./节点/${file2}.ini`
+echo "\"dns\": {
+    \"servers\": [
+      {
+        \"address\": \"$DNS1\",
+        \"port\": 53,
+        \"domains\": [
+          \"geosite:cn\"
+        ]
+      },
+      \"$DNS2\"
+    ]
+  }"
+else
+[ -n "$file1" ] && DNS=`getDNS ./节点/${file1}.ini`
+echo "\"dns\": {
+    \"servers\": [
+      \"$DNS\"
+    ]
+  }"
+fi
+}
+
+getRuleObj() {
+if [ -n "$file2" ]; then
+if [ "$proxy_mode" = "cn" ]; then
+echo ",
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"PROXY2\",
+        \"domain\": [\"geosite:LINKEDIN\"]
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"proxy\",
+        \"ip\": [\"geoip:cn\"]
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"proxy\",
+        \"domain\": [\"geosite:cn\"]
+      }"
+else
+echo ",
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"PROXY2\",
+        \"domain\": [\"geosite:geolocation-!cn\"]
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"PROXY2\",
+        \"ip\": [
+          \"149.154.167.99/32\",
+          \"149.154.175.10/32\",
+          \"149.154.167.40/32\",
+          \"149.154.167.42/32\",
+          \"149.154.175.117/32\",
+          \"149.154.175.50/32\",
+          \"149.154.167.50/32\",
+          \"149.154.167.51/32\",
+          \"149.154.175.100/32\",
+          \"149.154.167.91/32\",
+          \"149.154.167.90/32\",
+          \"149.154.165.120/32\",
+          \"149.154.166.120/32\",
+          \"149.154.164.250/32\",
+          \"149.154.167.117/32\",
+          \"149.154.167.118/32\",
+          \"149.154.167.192/27\",
+          \"149.154.164.8/29\",
+          \"91.108.8.0/27\",
+          \"91.108.12.0/27\",
+          \"91.108.16.0/27\",
+          \"91.108.56.0/24\",
+          \"91.108.4.0/24\",
+          \"149.154.160.0/22\",
+          \"149.154.164.0/22\",
+          \"149.154.168.0/22\",
+          \"149.154.172.0/22\",
+          \"91.108.56.0/22\",
+          \"91.108.4.0/22\",
+          \"91.108.8.0/22\",
+          \"91.108.16.0/22\",
+          \"91.108.12.0/22\",
+          \"149.154.160.0/20\",
+          \"2001:b28:f23d:f001::e/128\",
+          \"2001:67c:4e8:f002::e/128\",
+          \"2001:b28:f23d:f003::e/128\",
+          \"2001:b28:f23d:f001::a/128\",
+          \"2001:67c:4e8:f002::a/128\",
+          \"2001:b28:f23d:f003::a/128\",
+          \"2001:67c:4e8:f004::a/128\",
+          \"2001:b28:f23f:f005::a/128\",
+          \"2001:67c:4e8:fa60::/64\",
+          \"2001:b28:f23d::/48\",
+          \"2001:b28:f23f::/48\",
+          \"2001:67c:4e8::/48\"
+        ]
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"PROXY2\",
+        \"ip\": [
+          \"geoip:ae\",
+          \"geoip:au\",
+          \"geoip:br\",
+          \"geoip:ca\",
+          \"geoip:de\",
+          \"geoip:dk\",
+          \"geoip:es\",
+          \"geoip:fi\",
+          \"geoip:fr\",
+          \"geoip:gb\",
+          \"geoip:gr\",
+          \"geoip:hk\",
+          \"geoip:id\",
+          \"geoip:il\",
+          \"geoip:in\",
+          \"geoip:iq\",
+          \"geoip:ir\",
+          \"geoip:it\",
+          \"geoip:jp\",
+          \"geoip:kr\",
+          \"geoip:mo\",
+          \"geoip:my\",
+          \"geoip:nl\",
+          \"geoip:no\",
+          \"geoip:nz\",
+          \"geoip:ph\",
+          \"geoip:ru\",
+          \"geoip:sa\",
+          \"geoip:sg\",
+          \"geoip:th\",
+          \"geoip:tr\",
+          \"geoip:tw\",
+          \"geoip:us\",
+          \"geoip:vn\"
+        ]
+      }"
+fi
+fi
+}
+
+if [ "$breakBQ" = "1" ]; then
+breakBqRuleObj=',
+      {
+        "type": "field",
+        "network": "tcp",
+        "outboundTag": "direct",
+        "domain": [
+          "video.qq.com",
+          "cache.video.iqiyi.com",
+          "api.bilibili.com",
+          "api3-normal-c-hl.ixigua.com",
+          "www.ixigua.com",
+          "mobile.api.mgtv.com",
+          "pcweb2.api.mgtv.com",
+          "interface3.music.163.com",
+          "guide-acs.m.taobao.com"
+        ]
+      }'
+fi
+
+echo "{
+  \"log\": {
+    \"loglevel\": \"$loglevel\"
+  },
+  \"inbounds\": [
+    {
+      \"tag\": \"redir-tcp\",
+      \"port\": 1230,
+      \"protocol\": \"dokodemo-door\",
+      \"settings\": {
+        \"network\": \"tcp\",
+        \"followRedirect\": true
+      },
+      \"sniffing\": {
+        \"enabled\": $sniffing,
+        \"destOverride\": [\"http\",\"tls\"]
+      }
+    },$udpInbound
+  ],
+  \"outbounds\": [$outboundsObj
+    {
+      \"protocol\": \"freedom\",
+      \"settings\": {
+        \"domainStrategy\": \"UseIP\"
+      },
+      \"tag\": \"direct\"
+    },
+    {
+      \"protocol\": \"dns\",
+      \"tag\": \"dns-out\"
+    },
+    {
+      \"protocol\": \"blackhole\",
+      \"tag\": \"black\"
+    }
+  ],
+  `getDNSObj`,
+  \"routing\": {
+    \"domainStrategy\": \"IPIfNonMatch\",
+	\"domainMatcher\": \"mph\",
+    \"rules\": [
+      {
+        \"type\": \"field\",
+        \"network\": \"udp\",
+        \"port\": \"53\",
+        \"inboundTag\": [\"udp-in\"],
+        \"outboundTag\": \"dns-out\"
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"black\",
+        \"domain\": [\"geosite:CATEGORY-ADS-ALL\"]
+      }`getRuleObj`
+    ]
+  }
+}" > 核心/xray.json

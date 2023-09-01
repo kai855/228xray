@@ -1,0 +1,97 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "inbounds": [
+    {
+      "tag": "redir-tcp",
+      "port": 1230,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "network": "tcp",
+        "followRedirect": true
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http","tls"]
+      }
+    },
+    {
+      "tag": "udp-in",
+      "port": 1231,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http","tls"]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [{
+          "address": "60.215.152.143",
+          "port": 80,
+          "users": [{
+            "id": "04c691de-5ec3-4a46-9f9c-0cdf5c1d27ab",
+            "alterId": 0,
+            "security": "auto"
+          }]
+        }]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "\/",
+          "headers": {
+            "Host": "h5.dingtalk.com"
+          }
+        }
+      }
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIP"
+      },
+      "tag": "direct"
+    },
+    {
+      "protocol": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "black"
+    }
+  ],
+  "dns": {
+    "servers": [
+      "8.8.4.4"
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+	"domainMatcher": "mph",
+    "rules": [
+      {
+        "type": "field",
+        "network": "udp",
+        "port": "53",
+        "inboundTag": ["udp-in"],
+        "outboundTag": "dns-out"
+      },
+      {
+        "type": "field",
+        "outboundTag": "black",
+        "domain": ["geosite:CATEGORY-ADS-ALL"]
+      }
+    ]
+  }
+}

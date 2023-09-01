@@ -1,0 +1,7 @@
+    echo "- 指令正在执行，请等待几秒钟: 🐮"
+curl_netease=`curl --connect-timeout 10 -m 10 -s 'nstool.netease.com' | awk '{print $2}' | cut -d '=' -f 2 | sed "s/'//g"`
+curl_neteaseIP=`curl --connect-timeout 10 -m 10 -s $curl_netease | awk '{print $2}'`
+curl_cip_neteaseIP=`curl --connect-timeout 5 -m 5 -s "cip.cc/$curl_neteaseIP" | grep '数据二' | cut -d ':' -f 2`
+    
+   echo "- IP地址：$curl_neteaseIP"
+   echo "- IP位置：$curl_cip_neteaseIP"

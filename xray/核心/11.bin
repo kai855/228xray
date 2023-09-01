@@ -1,0 +1,18 @@
+#!/system/bin/sh
+DIR="${0%/*}"
+cd $DIR/../
+. ./config.ini
+/data/xray/核心/info
+y31='\E[1;31m'
+y32='\E[1;32m'
+y34='\E[1;34m'
+y35='\E[1;35m'
+RES='\E[0m'
+
+ip=$(awk -F "=" '{if($1 == "xaddr"){print $2}}' /data/xray/核心/info | awk -F ":" '{printf $1}')
+ipwz=`curl --connect-timeout 5 -m 5 -s "cip.cc/$ip" | grep '数据三' | cut -d ':' -f 2`
+
+IP=$(awk -F "=" '{if($1 == "yaddr"){print $2}}' /data/xray/核心/info | awk -F ":" '{printf $1}')
+IPwz=`curl --connect-timeout 5 -m 5 -s "cip.cc/$IP" | grep '数据三' | cut -d ':' -f 2`
+
+

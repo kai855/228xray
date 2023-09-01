@@ -1,0 +1,258 @@
+#!/system/bin/sh
+
+DIR="${0%/*}"
+cd $DIR/../
+. ./config.ini
+export PATH=$DIR:$PATH
+
+if echo $file | grep -q ","; then
+  file1=${file%,*}
+  file2=${file#*,}
+else
+  file1=$file
+fi
+
+useTun=$1
+loglevel=$2
+
+get_ip() {
+  server=${addr%:*}
+  if echo $server | grep -q [a-zA-Z]; then
+    ip=`busybox wget -q -T1 -O- http://119.29.29.29/d?dn=$server | busybox cut -d';' -f1`
+    if [ -z "$ip" ]; then
+      ip=`ping -c1 -w1 -W1 $server | grep 'PING' | busybox cut -d'(' -f2 |  busybox cut -d')' -f1`
+      [ -z "$ip" ] && echo "解析IP失败！($server)" && exit 1
+    fi
+  else
+    ip=$server
+  fi
+  addr=$ip:${addr#*:}
+}
+
+if [ "$useTun" = "1" ]; then
+udpInbound='
+    {
+      "tag": "udp-in",
+      "port": 1232,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http","tls"]
+      }
+    }'
+else
+udpInbound='
+    {
+      "tag": "udp-in",
+      "port": 1231,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "network": "udp",
+        "followRedirect": true
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http","tls"]
+      }
+    }'
+fi
+
+getOutboundObj() {
+source ./节点/$1.ini
+if echo $method | grep -q ":"; then
+  param1=${method%:*}
+  param2=${method#*:}
+else
+  param1=$method
+fi
+
+if [ "$param1" = "ws" ]; then
+[ -n "$host" ] && host="\"$host\""
+network='ws'
+wsSettingsObj='{
+          "path": "'${path:-/}'",
+          "headers": {
+            "Host": '${host:-null}'
+          }
+        }'
+  if [ -n "$param2" ]; then
+    tlssecurity="\"tls\""
+    tlsSettingsObj='{
+          "allowInsecure": true,
+          "serverName": null
+        }'
+  fi
+fi
+
+if [ "$param1" = "kcp" ]; then
+[ -n "$param2" ] && kcpType="\"$param2\""
+network='kcp'
+kcpSettingsObj='{
+          "mtu": 1350,
+          "tti": 50,
+          "uplinkCapacity": 12,
+          "downlinkCapacity": 100,
+          "congestion": true,
+          "readBufferSize": 5,
+          "writeBufferSize": 5,
+          "header": {
+            "type": '${kcpType:-null}',
+            "request": null,
+            "response": null
+          }
+        }'
+fi
+
+if [ -z "$network" ]; then
+network='tcp'
+tcpSettingsObj='{
+          "header": { 
+            "type": "http",
+            "request": {
+              "version": "1.1",
+              "method": "'$method'",
+              "path": "'$path'",
+              "headers": {
+                "Host": "'$host'"
+              }
+            }
+          }
+        }'
+fi
+
+[ "$param2" = "tls" ] || get_ip
+echo "${3}file"=$1 >> 核心/info
+echo "${3}addr"=$addr >> 核心/info
+if [ "$network" != "kcp" ]; then
+  echo "${3}path"=$path >> 核心/info
+  echo "${3}host"=$host >> 核心/info
+fi
+
+echo "
+    {
+      \"tag\": \"$2\",
+      \"protocol\": \"vmess\",
+      \"settings\": {
+        \"vnext\": [{
+          \"address\": \"${addr%:*}\",
+          \"port\": ${addr#*:},
+          \"users\": [{
+            \"id\": \"$uuid\",
+            \"alterId\": $alterId,
+            \"security\": \"$security\"
+          }]
+        }]
+      },
+      \"streamSettings\": {
+        \"network\": \"$network\",
+        \"security\": ${tlssecurity:-null},
+        \"tlsSettings\": ${tlsSettingsObj:-null},
+        \"tcpSettings\": ${tcpSettingsObj:-null},
+        \"kcpSettings\": ${kcpSettingsObj:-null},
+        \"wsSettings\": ${wsSettingsObj:-null},
+        \"httpSettings\": ${httpSettingsObj:-null}
+      }
+    },"
+}
+
+echo "" > 核心/info
+outboundObj1=`getOutboundObj $file1 proxy x`
+[ -n "$file2" ] && outboundObj2=`getOutboundObj $file2 PROXY2 y`
+
+getDns() {
+source $1
+echo $DNS
+}
+
+getDnsObj() {
+if [ -n "$file2" ]; then
+DNS1=`getDns ./节点/${file1}.ini`
+DNS2=`getDns ./节点/${file2}.ini`
+echo "\"dns\": {
+    \"servers\": [
+      {
+        \"address\": \"$DNS1\",
+        \"port\": 53,
+        \"domains\": [
+          \"geosite:cn\"
+        ]
+      },
+      \"$DNS2\"
+    ]
+  }"
+else
+DNS=`getDns ./节点/${file1}.ini`
+echo "\"dns\": {
+    \"servers\": [
+      \"$DNS\"
+    ]
+  }"
+fi
+}
+
+getRouteObj() {
+if [ -n "$file2" ]; then
+echo ",
+      {
+        \"type\": \"field\",
+        \"domain\": [\"geosite:cn\"],
+        \"outboundTag\": \"proxy\"
+      },
+      {
+        \"type\": \"field\",
+        \"ip\": [\"geoip:cn\"],
+        \"outboundTag\": \"proxy\"
+      }"
+fi
+}
+
+echo "{
+  \"log\": {
+    \"loglevel\": \"$loglevel\"
+  },
+  \"inbounds\": [
+    {
+      \"tag\": \"redir-tcp\",
+      \"port\": 1230,
+      \"protocol\": \"dokodemo-door\",
+      \"settings\": {
+        \"network\": \"tcp\",
+        \"followRedirect\": true
+      },
+      \"sniffing\": {
+        \"enabled\": true,
+        \"destOverride\": [\"http\",\"tls\"]
+      }
+    },$udpInbound
+  ],
+  \"outbounds\": [$outboundObj2$outboundObj1
+    {
+      \"protocol\": \"freedom\",
+      \"settings\": {
+        \"domainStrategy\": \"UseIP\"
+      },
+      \"tag\": \"direct\"
+    },
+    {
+      \"protocol\": \"dns\",
+      \"tag\": \"dns-out\"
+    }
+  ],
+  `getDnsObj`,
+  \"routing\": {
+    \"domainStrategy\": \"IPIfNonMatch\",
+    \"rules\": [
+      {
+        \"type\": \"field\",
+        \"network\": \"udp\",
+        \"port\": \"53\",
+        \"inboundTag\": [\"udp-in\"],
+        \"outboundTag\": \"dns-out\"
+      }`getRouteObj`
+    ]
+  }
+}" > 核心/config.json

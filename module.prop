@@ -1,0 +1,7 @@
+id=xray
+name=xray-48
+version=v4.8
+versionCode=2022714
+author=Kai
+description=脚本在 /data/xray 目录（核心不可用时，请安装busybox面具模块）
+minMagisk=1600
