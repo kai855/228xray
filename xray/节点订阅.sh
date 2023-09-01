@@ -70,6 +70,10 @@ host=$(awk -F'=' '/host/{print $2; exit}'  /data/xray/xray设置.txt)
 url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 
+if [[ $url -eq "1" ]]; then
+url=$url1
+else url=$url2
+
 echo $node_pmatching
 echo $proxy
 
