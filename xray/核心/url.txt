@@ -1,4 +1,4 @@
-url1=https://api.tsutsu.one/sub?target=v2ray&url=https%3A%2F%2Fnachoneko.azurefd.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3Dd923221d17219ba056b2549d76f11467&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
+url1=https://api.tsutsu.one/sub?target=clash&url=https%3A%2F%2Fnachoneko.azurefd.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D861492689135bb39ceafca5965954035&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
 
 url2=https://api.tsutsu.one/sub?target=v2ray&url=https%3A%2F%2Fnachoneko.azurefd.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3Dd923221d17219ba056b2549d76f11467&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
 
