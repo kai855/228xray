@@ -72,7 +72,8 @@ url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 
 if [[ $url -eq "1" ]]; then
 url=$url1
-else url=$url2
+elif[[ $url -eq "2" ]]; then
+url=$url2
 fi
 
 echo $node_pmatching
