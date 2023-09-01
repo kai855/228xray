@@ -101,7 +101,7 @@ while true;do
 
       sleep 86400
       echo 更新规则文件 >>/data/xray/日志.txt
-      curl -o  tmp.dat -L https://raw.githubusercontent.com/Loyalsoldier/geoip/release/cn.dat 
+      curl -o  tmp.dat -L https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
       mv tmp.dat /data/xray/核心/geoip.dat
       curl -o  tmp.dat -L https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
       mv tmp.dat /data/xray/核心/geosite.dat
@@ -149,7 +149,7 @@ target_date=$(awk -F'=' '/target_date/{print $2; exit}'  /data/xray/xray设置.t
 sed -i "/update=/cupdate=0" /data/xray/xray设置.txt
 
 sh  /data/xray/关闭.sh &
-echo 开始启动 $(date "+%m-%d %H:%M:%S") >/data/xray/日志.txt
+echo 开始启动 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 
 #check_url qq.com
 #while [ "$urlresult" -eq "000" ]; do
