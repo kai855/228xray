@@ -74,6 +74,10 @@ if [[ $url -eq "1" ]]; then
 url=$url1
 elif [[ $url -eq "2" ]]; then
 url=$url2
+elif [[ $url -eq "3" ]]; then
+url=$url3
+elif [[ $url -eq "4" ]]; then
+url=$url4
 fi
 
 echo $node_pmatching
