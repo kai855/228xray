@@ -67,6 +67,8 @@ url=$(awk -F'url=' '/url/{print $2; exit}'  /data/xray/xray设置.txt)
 node_pmatching=$(awk -F'=' '/node_pmatching/{print $2; exit}'  /data/xray/xray设置.txt)
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 host=$(awk -F'=' '/host/{print $2; exit}'  /data/xray/xray设置.txt)
+url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
+url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 
 echo $node_pmatching
 echo $proxy
