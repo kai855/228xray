@@ -64,7 +64,10 @@ wait
 }
 
 url=$(awk -F'url=' '/url/{print $2; exit}'  /data/xray/xray设置.txt)
-node_pmatching=$(awk -F'=' '/node_pmatching/{print $2; exit}'  /data/xray/xray设置.txt)
+
+#国内节点匹配正则
+node_pmatching=移动|电信|联通|China
+
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 host=$(awk -F'=' '/host/{print $2; exit}'  /data/xray/xray设置.txt)
 url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
