@@ -10,8 +10,6 @@ proxy=0
 #修改混淆
 host=h5.dingtalk.com
 
-#国内节点匹配正则
-node_pmatching=移动|电信|联通|china
 
 
 
