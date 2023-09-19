@@ -30,7 +30,7 @@ plain='\033[0m'
 proxy=$(awk -F'=' '/proxy/{print $2; exit}' /data/xray/xray设置.txt)
 
 #国内节点匹配正则
-node_pmatching=移动|电信|联通|China
+node_pmatching="移动|电信|联通|China"
 
 wait
 
