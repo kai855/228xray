@@ -77,6 +77,7 @@ url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url3=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url4=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
+url4=$(awk -F'url4=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 if [[ $url -eq "1" ]]; then
 url=$url1
 elif [[ $url -eq "2" ]]; then
