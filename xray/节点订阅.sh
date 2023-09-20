@@ -28,7 +28,7 @@ while read -r line
 do
    ( json_string=$(echo -n ${line#*://} | base64 -d)
     
-    node_name=$(echo -e $json_string | awk -F'"' '{for(i=1;i<=NF;i++)if($i=="ps") {gsub(/[ | -\/]/, "", $(i+2)); print $(i+2)}}')
+    node_name=$(echo -e $json_string | awk -F'"' '{for(i=1;i<=NF;i++)if($i=="ps") {gsub(/[ | -]/, "", $(i+2)); print $(i+2)}}')
     
     echo  $node_name>>/data/xray/日志.txt
    if [[ $node_name != *"ipv6"* && $node_name != *"下"* && $node_name != *"禁止"* ]]; then 
