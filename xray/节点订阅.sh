@@ -69,7 +69,7 @@ wait
 url=$(awk -F'url=' '/url/{print $2; exit}'  /data/xray/xray设置.txt)
 
 #国内节点匹配正则
-node_pmatching="移动|电信|联通|China"
+node_pmatching="移动|电信|联通|China|空配"
 
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 host=$(awk -F'=' '/host/{print $2; exit}'  /data/xray/xray设置.txt)
