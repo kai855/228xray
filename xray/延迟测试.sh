@@ -47,7 +47,7 @@ if [ "$proxy" = "1" ]; then
     wait
     
     #awk -F, '$2 >= 10' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
-    awk -F,  sort -t, -k1n -k2n -o ping2.txt
+    awk -F, '$1 >= 0' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
 else
     mv -f ping.txt ping1.txt
     echo ,未开启，999> ping2.txt
@@ -56,7 +56,7 @@ fi
 
 
 #awk -F, '$2 >= 10' ping1.txt | sort -t, -k1n -k2n -o ping1.txt
-awk -F,  sort -t, -k1n -k2n -o ping1.txt
+awk -F, '$1 >= 0' ping1.txt | sort -t, -k1n -k2n -o ping1.txt
 
 
 echo -e "${green}------测试完成------${plain}"
