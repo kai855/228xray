@@ -77,16 +77,29 @@ url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url3=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url4=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url4=$(awk -F'url4=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-if [[ $url -eq "1" ]]; then
-url=$url1
-elif [[ $url -eq "2" ]]; then
-url=$url2
-elif [[ $url -eq "3" ]]; then
-url=$url3
-elif [[ $url -eq "4" ]]; then
-url=$url4
-fi
+url5=$(awk -F'url4=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
+
+case $url in
+    1)
+        url=$url1
+        ;;
+    2)
+        url=$url2
+        ;;
+    3)
+        url=$url3
+        ;;
+    4)
+        url=$url4
+        ;;
+    5)
+        url=$url5
+        ;;
+    *)
+        # 处理其他情况的代码
+        ;;
+esac
+
 
 echo $node_pmatching
 echo $proxy
