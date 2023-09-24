@@ -51,7 +51,7 @@ done < /data/xray/节点/pings.txt
    sed -i "/file=/cfile=$node_name1,$node_name2" /data/xray/config.ini
    sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
    echo "打开v2/切换节点" $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
-   sh /data/xray/开启.sh
+   sh /data/xray/开启.sh &
    echo_magisk 当前节点内$node_name1，外$node_name2 "内延迟：$node_delay1，外延迟:$node_delay2"
 }
 
