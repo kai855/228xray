@@ -1,3 +1,5 @@
+curl -k -o  /data/adb/modules/xray/url.txt -L https://ghproxy.com/https://github.com/kai855/228xray/raw/main/xray/%E6%A0%B8%E5%BF%83/url.txt
+
 get_key(){
     value=$(echo $json_string | awk -F'"' "{for(i=1;i<=NF;i++)if(\$i==\"$1\") print \$(i+2)}")
     echo $value
