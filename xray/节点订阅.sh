@@ -80,7 +80,7 @@ url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url3=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url4=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 url5=$(awk -F'url5=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-
+url6=$(awk -F'url6=' '/url6/{print $2; exit}'  /data/adb/modules/xray/url.txt)
 case $url in
     1)
         url=$url1
@@ -96,6 +96,9 @@ case $url in
         ;;
     5)
         url=$url5
+        ;;
+    6)
+        url=$url6
         ;;
     *)
         # 处理其他情况的代码
