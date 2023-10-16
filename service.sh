@@ -111,7 +111,6 @@ check_net() {
 
 updata_geoip() {
  # 更新geoip
-while true;do 
 
       echo 更新规则文件 >>/data/xray/日志.txt
       curl -o  tmp.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
@@ -121,8 +120,6 @@ while true;do
       echo 规则文件更新完毕 >>/data/xray/日志.txt
       
       sh /data/xray/节点订阅.sh
-
-done
 }
 
 deadline() {
