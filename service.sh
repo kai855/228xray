@@ -178,7 +178,7 @@ check_date &
 
 while true; do
     
-    sleep 5
+    sleep 60
     url1="https://baidu.com" 
     url2="https://qq.com" 
     url3="https://taobao.com" 
@@ -206,9 +206,6 @@ while true; do
         start_v2
         continue
     fi
-    
-    
-    sleep 55
     
     
 done
