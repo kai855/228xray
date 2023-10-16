@@ -26,6 +26,7 @@ today=$(date "+%Y%m%d")
      fi
      
 rm -r /data/xray/节点/pings.txt
+updata_geoip
 start_v2
 sleep 7200
 done
@@ -173,8 +174,7 @@ echo_magisk 正在测试节点 测试节点中，请稍后
  # 切换节点
 check_date &
 
-updata_geoip
-echo "更新规则完毕" >>/data/xray/日志.txt
+
 
 while true; do
     
