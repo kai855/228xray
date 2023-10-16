@@ -62,3 +62,7 @@ awk -F, '$2 >= 5' ping1.txt | sort -t, -k1n -k2n -o ping1.txt
 
 echo -e "${green}------测试完成------${plain}"
 echo 节点测试完成>>/data/xray/日志.txt
+
+if [  ! -s "ping1.txt" ]; then
+sh /data/xray/延迟测试.sh
+fi
