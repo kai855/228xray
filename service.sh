@@ -175,7 +175,6 @@ check_date &
 
 updata_geoip
 echo "更新规则完毕" >>/data/xray/日志.txt
-start_v2
 
 while true; do
     
