@@ -139,7 +139,6 @@ while true; do
 done
 }
 
-cp -af /data/adb/modules/xray/核心 /data/xray/核心
 chmod -R 777 /data/xray
 
 #初始化
@@ -150,7 +149,7 @@ sed -i "/update=/cupdate=0" /data/xray/xray设置.txt
 
 sh  /data/xray/关闭.sh &
 echo 开始启动 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
-
+sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
 #check_url qq.com
 #while [ "$urlresult" -eq "000" ]; do
 #  echo 等待开机网络 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
@@ -174,7 +173,9 @@ echo_magisk 正在测试节点 测试节点中，请稍后
  # 切换节点
 check_date &
 
-updata_geoip &
+updata_geoip
+echo "更新规则完毕" >>/data/xray/日志.txt
+start_v2
 
 while true; do
     
