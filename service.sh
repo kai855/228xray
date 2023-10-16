@@ -210,7 +210,7 @@ while true; do
 # 使用grep命令检测是否包含“上海”这个关键词  
 if echo "$content" | grep -q "上海"; then  
     echo "疑似使用通用流量" 
-    
+    deadline
 fi
     
 done
