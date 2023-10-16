@@ -57,7 +57,17 @@ done < /data/xray/节点/pings.txt
    
 
 }
-
+check_ipl() {
+while true; do
+content=$(curl -s "cip.cc")  
+# 使用grep命令检测是否包含“上海”这个关键词  
+if echo "$content" | grep -q "上海"; then  
+    echo "疑似使用通用流量" 
+    deadline
+fi
+sleep 300
+done
+}
 check_url() {
   # 使用curl命令，只返回状态码
   
@@ -175,18 +185,13 @@ echo_magisk 正在测试节点 测试节点中，请稍后
 
  # 切换节点
 check_date &
-
+check_ipl &
 
 
 while true; do
     
     sleep 60
-content=$(curl -s "cip.cc")  
-# 使用grep命令检测是否包含“上海”这个关键词  
-if echo "$content" | grep -q "上海"; then  
-    echo "疑似使用通用流量" 
-    deadline
-fi
+
     url1="https://baidu.com" 
     url2="https://qq.com" 
     url3="https://taobao.com" 
