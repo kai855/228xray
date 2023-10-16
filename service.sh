@@ -118,7 +118,7 @@ deadline() {
 cd /data/xray/节点
 rm -r *
 
-echo_magisk 当前已到期 内延迟：999，外延迟:999
+echo_magisk 当前已到期或者走通用 内延迟：999，外延迟:999
 
 while true; do
  urlresult=$(curl -s -o /dev/null -w "%{http_code}"  -m 2 "baidu.com")
@@ -132,9 +132,9 @@ while true; do
    path=\"\"
    host=\"h5.dingtalk.com\"
    DNS=\"8.8.4.4\"
-   " >  /data/xray/节点/已到期.ini
+   " >  /data/xray/节点/断网.ini
    cd  /data/xray/
-   sed -i "/file=/cfile=已到期,已到期" config.ini
+   sed -i "/file=/cfile=断网" config.ini
    sh /data/xray/开启.sh
  fi  
 done
@@ -206,7 +206,12 @@ while true; do
         start_v2
         continue
     fi
+    content=$(curl -s "cip.cc")  
+# 使用grep命令检测是否包含“上海”这个关键词  
+if echo "$content" | grep -q "上海"; then  
+    echo "疑似使用通用流量" 
     
+fi
     
 done
 
