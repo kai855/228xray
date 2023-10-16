@@ -16,7 +16,7 @@ do
     
     if [[ "$ip" != *:* ]]
     then
-    echo  $(basename $file .ini),$( ping -c 4 -w 1 $ip | awk -F'/' '/^round-trip|rtt/ {print $5}' ) >> ping.txt
+    echo  $(basename $file .ini),$( ping -c 1 -w 1 $ip | awk -F'/' '/^round-trip|rtt/ {print $5}' ) >> ping.txt
     fi   
     ) &
 done
