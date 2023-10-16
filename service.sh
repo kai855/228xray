@@ -113,7 +113,6 @@ updata_geoip() {
  # 更新geoip
 while true;do 
 
-      sleep 86400
       echo 更新规则文件 >>/data/xray/日志.txt
       curl -o  tmp.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
       mv tmp.dat /data/xray/核心/geoip.dat
@@ -174,7 +173,7 @@ sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
 #if [ $(ls "/data/xray/节点" | wc -l) -eq 0 ]; then  
     # 如果文件夹为空，则运行p.sh脚本 
 #    echo "不存在节点" >>/data/xray/日志.txt
-    sh /data/xray/节点订阅.sh
+#    sh /data/xray/节点订阅.sh
 #else  
 #    echo "存在节点" >>/data/xray/日志.txt
 #fi
@@ -186,7 +185,7 @@ echo_magisk 正在测试节点 测试节点中，请稍后
 
  # 切换节点
 check_date &
-#check_ipl &
+check_ipl &
 
 
 while true; do
