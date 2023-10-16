@@ -186,7 +186,7 @@ echo_magisk 正在测试节点 测试节点中，请稍后
 
  # 切换节点
 check_date &
-check_ipl &
+#check_ipl &
 
 
 while true; do
