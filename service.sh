@@ -55,12 +55,7 @@ done < /data/xray/节点/pings.txt
    sh /data/xray/开启.sh &
    echo_magisk 当前节点内$node_name1，外$node_name2 "内延迟：$node_delay1，外延迟:$node_delay2"
    content=$(curl -s "cip.cc")  
-   sleep 10
-# 使用grep命令检测是否包含“上海”这个关键词  
-if echo "$content" | grep -q "上海"; then  
-    echo "疑似使用通用流量" 
-    deadline
-fi
+
 }
 
 check_url() {
@@ -186,6 +181,12 @@ check_date &
 while true; do
     
     sleep 60
+
+# 使用grep命令检测是否包含“上海”这个关键词  
+if echo "$content" | grep -q "上海"; then  
+    echo "疑似使用通用流量" 
+    deadline
+fi
     url1="https://baidu.com" 
     url2="https://qq.com" 
     url3="https://taobao.com" 
