@@ -53,6 +53,8 @@ done < /data/xray/节点/pings.txt
    sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
    echo "打开v2/切换节点" $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
    sh /data/xray/开启.sh &
+   pid2=$!
+   wait $pid2
    echo_magisk 当前节点内$node_name1，外$node_name2 "内延迟：$node_delay1，外延迟:$node_delay2"
    content=$(curl -s "cip.cc")  
 # 使用grep命令检测是否包含“上海”这个关键词  
