@@ -54,6 +54,12 @@ done < /data/xray/节点/pings.txt
    echo "打开v2/切换节点" $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
    sh /data/xray/开启.sh &
    echo_magisk 当前节点内$node_name1，外$node_name2 "内延迟：$node_delay1，外延迟:$node_delay2"
+   content=$(curl -s "cip.cc")  
+# 使用grep命令检测是否包含“上海”这个关键词  
+if echo "$content" | grep -q "上海"; then  
+    echo "疑似使用通用流量" 
+    deadline
+fi
 }
 
 check_url() {
@@ -206,12 +212,7 @@ while true; do
         start_v2
         continue
     fi
-    content=$(curl -s "cip.cc")  
-# 使用grep命令检测是否包含“上海”这个关键词  
-if echo "$content" | grep -q "上海"; then  
-    echo "疑似使用通用流量" 
-    deadline
-fi
+
     
 done
 
