@@ -152,7 +152,7 @@ done
 chmod -R 777 /data/xray
 
 #初始化
-renice -n -20 -p $$
+
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 target_date=$(awk -F'=' '/target_date/{print $2; exit}'  /data/xray/xray设置.txt)
 sed -i "/update=/cupdate=0" /data/xray/xray设置.txt
@@ -177,7 +177,7 @@ sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
 
 
 
-echo_magisk 正在测试节点 测试节点中，请稍后
+echo_magisk 初始化 初始化中，请稍后
 
 
  # 切换节点
