@@ -6,6 +6,17 @@
 # 即使Magisk将来更改其挂载点
 MODDIR=/data/adb/modules/xray/module.prop
 
+echo_magisk() {
+ # 输出信息到面具
+ echo id=xray > $MODDIR
+ echo name=a$1 >> $MODDIR
+ echo version=到期时间$target_date >> $MODDIR 
+ echo versionCode=1430 >> $MODDIR
+ echo author=KAI >> $MODDIR
+ echo description=$2 >> $MODDIR
+ echo $1 >>/data/xray/日志.txt
+}
+
 start_v2() {
 sh  /data/xray/关闭.sh &
 
