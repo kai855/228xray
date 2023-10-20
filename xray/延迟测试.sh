@@ -21,8 +21,8 @@ do
     ) &
 done
 
-pid2=$!
-wait $pid2
+
+wait 
 
 green='\033[0;32m'
 plain='\033[0m'
@@ -46,8 +46,8 @@ if [ "$proxy" = "1" ]; then
             fi
         ) &
     done < ping.txt
-    pid2=$!
-    wait $pid2
+
+    wait 
     
     #awk -F, '$2 >= 10' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
     awk -F, '$2 >= 5' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
