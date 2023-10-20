@@ -101,7 +101,9 @@ check_net() {
        if [ -s $1 ]; then 
          #sed -i '1d' $1
          echo  $2 >> /data/xray/节点/pings.txt
-       else rm -r /data/xray/节点/pings.txt
+       else 
+         rm -r /data/xray/节点/pings.txt
+         sh /data/xray/延迟测试.sh
        fi
          sed -i "/nodeswitch=/cnodeswitch=1" /data/xray/xray设置.txt
          
