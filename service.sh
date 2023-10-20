@@ -35,7 +35,7 @@ done
 }
 
 start_v2() {
-
+sh  /data/xray/关闭.sh &
 if [  ! -s "ping1.txt" ]; then
 sh /data/xray/延迟测试.sh
 fi
