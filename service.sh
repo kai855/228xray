@@ -96,9 +96,10 @@ check_net() {
 
      check_url 
      #echo $urlresult
-     sed -i '1d' $1
+     
      if [ "$urlresult" -eq 000 ]; then
      echo  $2 >> /data/xray/节点/pings.txt
+     sed -i '1d' $1
        if [ -s $1 ]; then 
          echo 切换节点>>/data/xray/日志.txt
          
