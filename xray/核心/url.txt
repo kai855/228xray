@@ -10,4 +10,4 @@ url5=https://clashapi.rokeyyan.com/sub?target=v2ray&url=%20https%3A%2F%2Fmuguacl
 
 url6=https://ghproxy.com/https://raw.githubusercontent.com/kai855/228xray/main/xray/%E6%A0%B8%E5%BF%83/6.txt
 
-url99=https://v.id9.cc/sub?target=v2ray&url=http%3A%2F%2Fmly.yunjisuan.cf%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D2e03837e5a2915fa06482ac89c04fa79&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
+url99=https://clashapi.rokeyyan.com/sub?target=v2ray&url=http%3A%2F%2Fmly.yunjisuan.cf%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D2e03837e5a2915fa06482ac89c04fa79&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
