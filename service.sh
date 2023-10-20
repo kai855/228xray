@@ -26,9 +26,10 @@ today=$(date "+%Y%m%d")
      fi
      
 rm -r /data/xray/节点/pings.txt
-updata_geoip
+
 
 sleep 7200
+updata_geoip
 sh /data/xray/节点订阅.sh    
 sh /data/xray/延迟测试.sh
 done
@@ -184,6 +185,7 @@ echo_magisk 初始化 初始化中，请稍后
  # 切换节点
 check_date &
 check_ipl &
+updata_geoip
 sh /data/xray/节点订阅.sh    
 sh /data/xray/延迟测试.sh
 start_v2
