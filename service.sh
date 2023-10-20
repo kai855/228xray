@@ -27,8 +27,10 @@ today=$(date "+%Y%m%d")
      
 rm -r /data/xray/节点/pings.txt
 updata_geoip
-start_v2
+
 sleep 7200
+sh /data/xray/节点订阅.sh    
+sh /data/xray/延迟测试.sh
 done
 }
 
@@ -118,8 +120,7 @@ updata_geoip() {
       #mv tmp.dat /data/xray/核心/geosite.dat
       echo 规则文件更新完毕 >>/data/xray/日志.txt
       
-      sh /data/xray/节点订阅.sh    
-      sh /data/xray/延迟测试.sh
+
 }
 
 deadline() {
@@ -183,7 +184,9 @@ echo_magisk 初始化 初始化中，请稍后
  # 切换节点
 check_date &
 check_ipl &
-
+sh /data/xray/节点订阅.sh    
+sh /data/xray/延迟测试.sh
+start_v2
 
 while true; do
     
