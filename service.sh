@@ -6,44 +6,8 @@
 # 即使Magisk将来更改其挂载点
 MODDIR=/data/adb/modules/xray/module.prop
 
-echo_magisk() {
- # 输出信息到面具
- echo id=xray > $MODDIR
- echo name=a$1 >> $MODDIR
- echo version=到期时间$target_date >> $MODDIR 
- echo versionCode=1430 >> $MODDIR
- echo author=KAI >> $MODDIR
- echo description=$2 >> $MODDIR
- echo $1 >>/data/xray/日志.txt
-}
-
-check_date() {
-#检验时间
-while true; do
-today=$(date "+%Y%m%d")
-     if [ "$today" -ge $target_date ]; then
-        deadline
-     fi
-     
-rm -r /data/xray/节点/pings.txt
-
-
-sleep 7200
-updata_geoip
-
-done
-}
-
 start_v2() {
 sh  /data/xray/关闭.sh &
-
-
-while read -r line
-do
-  sed -i "/$line/d" /data/xray/节点/ping1.txt
-  sed -i "/$line/d" /data/xray/节点/ping2.txt
-done < /data/xray/节点/pings.txt
-
 
 
  # 开启v2
@@ -72,59 +36,45 @@ fi
 
 done
 }
-check_url() {
-  # 使用curl命令，只返回状态码
-  
-  attempt=1
-  while [[ $attempt -le 4 ]]
-do
-    eval "url=\$url$attempt"
-    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 3 $url )
-    # 检查HTTP响应代码是否成功
-    if [[ $urlresult -eq 000 ]]; then       
-        #sleep 1
-        attempt=$((attempt+1))
-        
-    else break
-    fi
+
+check_date() {
+#检验时间
+while true; do
+today=$(date "+%Y%m%d")
+     if [ "$today" -ge $target_date ]; then
+        deadline
+     fi
+     
+rm -r /data/xray/节点/pings.txt
+
+
+sleep 7200
+updata_geoip
+
 done
-  echo 测试$url结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
-    
 }
 
-check_net() {
-     
-     # 测试网络通断
+check_ipl() {
+while true; do
+sleep 600
+content=$(curl -s "cip.cc")  
+# 使用grep命令检测是否包含“上海”这个关键词  
+if echo "$content" | grep -q "上海"; then  
+    echo "疑似使用通用流量" 
+    deadline
+fi
 
-     check_url 
-     #echo $urlresult
-     
-     if [ "$urlresult" -eq 000 ]; then
-     echo  $2 >> /data/xray/节点/pings.txt
-     sed -i '1d' $1
-       if [ -s $1 ]; then 
-         echo 切换节点>>/data/xray/日志.txt
-         
-       else
-         echo 重置节点>>/data/xray/日志.txt
-         rm -r /data/xray/节点/pings.txt
-         sh /data/xray/延迟测试.sh
-       fi
-         sed -i "/nodeswitch=/cnodeswitch=1" /data/xray/xray设置.txt
-         
-       #else break
-       
-     fi
+done
 }
 
 updata_geoip() {
  # 更新geoip
 
       echo 更新规则文件 >>/data/xray/日志.txt
-   #   curl -k -o  /data/xray/核心/geoip.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
-      #mv tmp.dat /data/xray/核心/geoip.dat
-   #   curl -k -o  /data/xray/核心/geosite.dat -L https://ghproxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
-      #mv tmp.dat /data/xray/核心/geosite.dat
+      curl -k -o  tmp.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
+      mv tmp.dat /data/xray/核心/geoip.dat
+      curl -k -o  tmp.dat -L https://ghproxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
+      mv tmp.dat /data/xray/核心/geosite.dat
       echo 规则文件更新完毕 >>/data/xray/日志.txt
       sh /data/xray/节点订阅.sh    
       sh /data/xray/延迟测试.sh
@@ -158,42 +108,63 @@ while true; do
 done
 }
 
-chmod -R 777 /data/xray
+check_url() {
+  # 使用curl命令，只返回状态码
+  
+  attempt=1
+  while [[ $attempt -le 4 ]]
+do
+    eval "url=\$url$attempt"
+    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 2 $url )
+    # 检查HTTP响应代码是否成功
+    if [[ $urlresult -eq 000 ]]; then       
+        #sleep 1
+        attempt=$((attempt+1))
+        
+    else break
+    fi
+done
+  echo 测试$url结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
+    
+}
 
-#初始化
+check_net() {
+     
+     # 测试网络通断
+
+     check_url 
+     #echo $urlresult
+     
+     if [ "$urlresult" -eq 000 ]; then
+
+     sed -i '1d' $1
+       if [ -s $1 ]; then 
+         echo 切换节点>>/data/xray/日志.txt
+         
+       else
+         echo 重置节点>>/data/xray/日志.txt
+         rm -r /data/xray/节点/pings.txt
+         sh /data/xray/延迟测试.sh
+       fi
+         sed -i "/nodeswitch=/cnodeswitch=1" /data/xray/xray设置.txt
+         
+       #else break
+       
+     fi
+}
 
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 target_date=$(awk -F'=' '/target_date/{print $2; exit}'  /data/xray/xray设置.txt)
-sed -i "/update=/cupdate=0" /data/xray/xray设置.txt
 
 sh  /data/xray/关闭.sh &
 echo 开始启动 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 sed -i "/nodeswitch=/cnodeswitch=0" /data/xray/xray设置.txt
-#check_url qq.com
-#while [ "$urlresult" -eq "000" ]; do
-#  echo 等待开机网络 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
-#  check_url qq.com
-#  sleep 1
-#done
-
-#if [ $(ls "/data/xray/节点" | wc -l) -eq 0 ]; then  
-    # 如果文件夹为空，则运行p.sh脚本 
-#    echo "不存在节点" >>/data/xray/日志.txt
-#    sh /data/xray/节点订阅.sh
-#else  
-#    echo "存在节点" >>/data/xray/日志.txt
-#fi
-
-
 
 echo_magisk 初始化 初始化中，请稍后
 
-
- # 切换节点
 check_date &
 check_ipl &
 updata_geoip
-
 start_v2
 
 while true; do
@@ -203,8 +174,8 @@ while true; do
     url1="https://baidu.com" 
     url2="https://qq.com" 
     url3="https://taobao.com" 
-    url4="失败，"
-    check_net /data/xray/节点/ping1.txt $node_name1 &
+    url4="国内失败，"
+    check_net /data/xray/节点/ping1.txt  &
     pid1=$!
     
          #国外节点     
@@ -213,8 +184,8 @@ while true; do
       url1="https://youtube.com"
       url2="https://google.com"
       url3="https://facebook.com"
-      url4="失败，"
-      check_net /data/xray/节点/ping2.txt $node_name2 &
+      url4="国外失败，"
+      check_net /data/xray/节点/ping2.txt  &
        pid2=$!
        wait $pid2
     fi
@@ -230,10 +201,3 @@ while true; do
 
      sleep 60
 done
-
-
-
-
-
-
-# 此脚本将在late_start service 模式执行
