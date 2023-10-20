@@ -30,8 +30,7 @@ rm -r /data/xray/节点/pings.txt
 
 sleep 7200
 updata_geoip
-sh /data/xray/节点订阅.sh    
-sh /data/xray/延迟测试.sh
+
 done
 }
 
@@ -120,7 +119,8 @@ updata_geoip() {
       curl -k -o  /data/xray/核心/geosite.dat -L https://ghproxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
       #mv tmp.dat /data/xray/核心/geosite.dat
       echo 规则文件更新完毕 >>/data/xray/日志.txt
-      
+      sh /data/xray/节点订阅.sh    
+      sh /data/xray/延迟测试.sh
 
 }
 
@@ -186,8 +186,7 @@ echo_magisk 初始化 初始化中，请稍后
 check_date &
 check_ipl &
 updata_geoip
-sh /data/xray/节点订阅.sh    
-sh /data/xray/延迟测试.sh
+
 start_v2
 
 while true; do
