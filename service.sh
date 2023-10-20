@@ -192,7 +192,7 @@ start_v2
 
 while true; do
     
-    sleep 60
+   
 
     url1="https://baidu.com" 
     url2="https://qq.com" 
@@ -222,7 +222,7 @@ while true; do
         continue
     fi
 
-    
+     sleep 60
 done
 
 
