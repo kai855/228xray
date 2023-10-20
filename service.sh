@@ -44,9 +44,7 @@ do
   sed -i "/$line/d" /data/xray/节点/ping2.txt
 done < /data/xray/节点/pings.txt
 
-if [  ! -s "ping1.txt" ]; then
-sh /data/xray/延迟测试.sh
-fi
+
 
  # 开启v2
    node_name1=$( cat /data/xray/节点/ping1.txt  | awk -F ',' '{print $1}'|head -n 1)
