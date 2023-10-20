@@ -103,7 +103,8 @@ check_net() {
        if [ -s $1 ]; then 
          echo 切换节点>>/data/xray/日志.txt
          
-       else 
+       else
+         echo 重置节点>>/data/xray/日志.txt
          rm -r /data/xray/节点/pings.txt
          sh /data/xray/延迟测试.sh
        fi
