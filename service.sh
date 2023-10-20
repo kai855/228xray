@@ -26,6 +26,7 @@ today=$(date "+%Y%m%d")
      fi
      
 rm -r /data/xray/节点/pings.txt
+sh /data/xray/延迟测试.sh
 updata_geoip
 start_v2
 sleep 7200
@@ -34,7 +35,6 @@ done
 
 start_v2() {
 
-sh /data/xray/延迟测试.sh
 while read -r line
 do
   sed -i "/$line/d" /data/xray/节点/ping1.txt
