@@ -21,7 +21,8 @@ do
     ) &
 done
 
-
+pid2=$!
+wait $pid2
 
 green='\033[0;32m'
 plain='\033[0m'
@@ -33,7 +34,7 @@ proxy=$(awk -F'=' '/proxy/{print $2; exit}' /data/xray/xray设置.txt)
 #国内节点匹配正则
 node_pmatching="移动|电信|联通|China|空配|🇨🇳"
 
-wait
+
 
 if [ "$proxy" = "1" ]; then
     while read -r line; do
@@ -45,7 +46,8 @@ if [ "$proxy" = "1" ]; then
             fi
         ) &
     done < ping.txt
-    wait
+    pid2=$!
+    wait $pid2
     
     #awk -F, '$2 >= 10' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
     awk -F, '$2 >= 5' ping2.txt | sort -t, -k1n -k2n -o ping2.txt
