@@ -1,5 +1,5 @@
 cd /data/xray/节点
-rm -r ping.txt ping1.txt ping2.txt
+rm -r ping.txt ping1.txt ping2.txt pings.txt
 
 echo 测试节点中>>/data/xray/日志.txt
 
