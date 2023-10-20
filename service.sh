@@ -96,11 +96,12 @@ check_net() {
 
      check_url 
      #echo $urlresult
+     sed -i '1d' $1
      if [ "$urlresult" -eq 000 ]; then
-     
+     echo  $2 >> /data/xray/节点/pings.txt
        if [ -s $1 ]; then 
-         #sed -i '1d' $1
-         echo  $2 >> /data/xray/节点/pings.txt
+         echo 切换节点>>/data/xray/日志.txt
+         
        else 
          rm -r /data/xray/节点/pings.txt
          sh /data/xray/延迟测试.sh
