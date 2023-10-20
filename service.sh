@@ -186,6 +186,7 @@ while true; do
     url2="https://qq.com" 
     url3="https://taobao.com" 
     url4="国内失败，"
+    sleep 5
     check_net /data/xray/节点/ping1.txt  &
     pid1=$!
     
