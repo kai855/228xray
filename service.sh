@@ -112,10 +112,10 @@ updata_geoip() {
  # 更新geoip
 
       echo 更新规则文件 >>/data/xray/日志.txt
-      curl -o  tmp.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
-      mv tmp.dat /data/xray/核心/geoip.dat
-      curl -o  tmp.dat -L https://ghproxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
-      mv tmp.dat /data/xray/核心/geosite.dat
+      curl -o  /data/xray/核心/geoip.dat -L https://ghproxy.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
+      #mv tmp.dat /data/xray/核心/geoip.dat
+      curl -o  /data/xray/核心/geosite.dat -L https://ghproxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
+      #mv tmp.dat /data/xray/核心/geosite.dat
       echo 规则文件更新完毕 >>/data/xray/日志.txt
       
       sh /data/xray/节点订阅.sh    
