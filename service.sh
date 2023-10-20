@@ -36,6 +36,10 @@ done
 
 start_v2() {
 
+if [  ! -s "ping1.txt" ]; then
+sh /data/xray/延迟测试.sh
+fi
+
 while read -r line
 do
   sed -i "/$line/d" /data/xray/节点/ping1.txt
