@@ -58,7 +58,7 @@ method=\"$method\"
 type=\"$Type\"
 path=\"$path\"
 host=\"$host\"
-DNS=\"8.8.4.4\"
+DNS=\"223.5.5.5\"
 " > /data/xray/节点/$2$node_name.ini
 echo 获取节点$node_name 
 fi
