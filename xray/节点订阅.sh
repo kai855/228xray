@@ -75,34 +75,31 @@ node_pmatching="移动|电信|联通|China|空配|🇨🇳|内蒙"
 
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 host=$(awk -F'=' '/host/{print $2; exit}'  /data/xray/xray设置.txt)
-url1=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url2=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url3=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url4=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url5=$(awk -F'url5=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url6=$(awk -F'url6=' '/url6/{print $2; exit}'  /data/adb/modules/xray/url.txt)
-url99=$(awk -F'url99=' '/url99/{print $2; exit}'  /data/adb/modules/xray/url.txt)
+
 case $url in
     1)
-        url=$url1
+        url=$(awk -F'url1=' '/url1/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     2)
-        url=$url2
+        url=$(awk -F'url2=' '/url2/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     3)
-        url=$url3
+        url=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     4)
-        url=$url4
+        url=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     5)
-        url=$url5
+        url=$(awk -F'url5=' '/url5/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     6)
-        url=$url6
+        url=$(awk -F'url6=' '/url6/{print $2; exit}'  /data/adb/modules/xray/url.txt)
+        ;;
+    98)
+        url=$(awk -F'url98=' '/url98/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     99)
-        url=$url99
+        url=$(awk -F'url99=' '/url99/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     *)
         # 处理其他情况的代码
