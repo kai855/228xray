@@ -86,7 +86,7 @@ case $url in
     3)
         url=$(awk -F'url3=' '/url3/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
-    99)
+    4)
         url=$(awk -F'url4=' '/url4/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     5)
@@ -98,7 +98,7 @@ case $url in
     98)
         url=$(awk -F'url98=' '/url98/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
-    4)
+    99)
         url=$(awk -F'url99=' '/url99/{print $2; exit}'  /data/adb/modules/xray/url.txt)
         ;;
     *)
