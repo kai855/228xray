@@ -35,7 +35,9 @@ do
     echo  $node_name>>/data/xray/日志.txt
    if [[ $node_name != *"ipv6"* && $node_name != *"下"* && $node_name != *"禁止"* ]]; then 
       if [ "$proxy" -eq "1" ] || echo "$node_name" | grep -Eq "$node_pmatching"; then
-      
+        if [[ "$node_name" == *"台湾"* ]]; then
+          node_name=${node_name//"🇨🇳"}  
+        fi
       add=$(get_key add)
       port=$(get_key port)
       uuid=$(get_key id)
