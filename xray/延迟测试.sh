@@ -62,7 +62,7 @@ fi
 
 
 #awk -F, '$2 >= 10' ping1.txt | sort -t, -k1n -k2n -o ping1.txt
-awk -F, '{ if ($2 =="") { $2 =",999" } print}' ping1.txt | sed 's/ //g' >pingl.txt
+awk -F, '{ if ($2 =="") { $2 =",998" } print}' ping1.txt | sed 's/ //g' >pingl.txt
 mv pingl.txt ping1.txt
 awk -F, '$2 >= 10' ping1.txt | sort -t, -k1n -k2n -o ping1.txt
 
