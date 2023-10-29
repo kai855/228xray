@@ -33,7 +33,7 @@ do
     node_name=$(echo -e $json_string | awk -F'"' '{for(i=1;i<=NF;i++)if($i=="ps") {gsub(/[() | -]/, "", $(i+2)); print $(i+2)}}')
     
     echo  $node_name>>/data/xray/日志.txt
-   if [[ $node_name != *"ipv6"* && $node_name != *"当前"* && $node_name != *"禁止"* && $node_name != *"问题"* ]]; then 
+   if [[ $node_name != *"ipv6"* && $node_name != *"下次"* && $node_name != *"禁止"* && $node_name != *"工单"* && $node_name != *"当前"* ]]; then 
       if [[ "$node_name" == *"台湾"* ]]; then
           node_name=${node_name//"🇨🇳"} 
       fi
