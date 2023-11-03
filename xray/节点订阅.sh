@@ -1,4 +1,4 @@
-curl -k -o  /data/adb/modules/xray/url.txt -L https://gh.api.99988866.xyz/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
+curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
 
 get_key(){
     value=$(echo $json_string | awk -F'"' "{for(i=1;i<=NF;i++)if(\$i==\"$1\") print \$(i+2)}")
