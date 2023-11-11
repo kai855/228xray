@@ -244,6 +244,11 @@ echo ",
       },
       {
         \"type\": \"field\",
+        \"outboundTag\": \"PROXY2\",
+        \"domain\": [\"geosite:whatsapp\"]
+      },
+      {
+        \"type\": \"field\",
         \"outboundTag\": \"proxy\",
         \"ip\": [\"geoip:cn\"]
       },
