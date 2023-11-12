@@ -426,6 +426,11 @@ echo "{
         \"port\": \"53\",
         \"inboundTag\": [\"udp-in\"],
         \"outboundTag\": \"dns-out\"
+      },
+      {
+        \"type\": \"field\",
+        \"outboundTag\": \"black\",
+        \"domain\": [\"geosite:CATEGORY-ADS-ALL\"]
       }`getRuleObj`
     ]
   }
