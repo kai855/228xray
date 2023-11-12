@@ -245,7 +245,7 @@ echo ",
       {
         \"type\": \"field\",
         \"outboundTag\": \"PROXY2\",
-        \"domain\": [\"geosite:whatsapp\"]
+        \"domain\": [\"geosite:WHATSAPP\"]
       },
       {
         \"type\": \"field\",
