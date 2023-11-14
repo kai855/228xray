@@ -59,7 +59,7 @@ today=$(date "+%Y%m%d")
 rm -r /data/xray/节点/pings.txt
 
 
-sleep 7200
+sleep 1d
 updata_geoip
 
 done
