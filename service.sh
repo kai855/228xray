@@ -215,5 +215,5 @@ while true; do
         continue
     fi
 
-     sleep 60
+     sleep 1m
 done
