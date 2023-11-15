@@ -37,7 +37,7 @@ sh  /data/xray/关闭.sh &
 }
 check_ipl() {
 while true; do
-sleep 300
+sleep 10m
 content=$(curl -s "cip.cc")  
 # 使用grep命令检测是否包含“上海”这个关键词  
 if echo "$content" | grep -q "上海"; then  
