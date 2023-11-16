@@ -48,20 +48,10 @@ fi
 done
 }
 
-check_date() {
-#检验时间
+updata_delay() {
 while true; do
-today=$(date "+%Y%m%d")
-     if [ "$today" -ge $target_date ]; then
-        deadline
-     fi
-     
-rm -r /data/xray/节点/pings.txt
-
-
-sleep 1d
-updata_geoip
-
+sleep 1h
+sh /data/xray/延迟测试.sh
 done
 }
 
@@ -168,6 +158,7 @@ echo_magisk 初始化 初始化中，请稍后
 check_date &
 check_ipl &
 updata_geoip
+updata_delay &
 start_v2
 
 while true; do
