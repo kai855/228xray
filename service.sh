@@ -48,13 +48,29 @@ fi
 done
 }
 
+check_date() {
+#检验时间
+while true; do
+today=$(date "+%Y%m%d")
+     if [ "$today" -ge $target_date ]; then
+        deadline
+     fi
+
+rm -r /data/xray/节点/pings.txt
+
+
+sleep 3h
+updata_geoip
+
+done
+}
+
 updata_delay() {
 while true; do
 sleep 1h
 sh /data/xray/延迟测试.sh
 done
 }
-
 
 updata_geoip() {
  # 更新geoip
