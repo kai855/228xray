@@ -65,18 +65,6 @@ updata_geoip
 done
 }
 
-check_ipl() {
-while true; do
-sleep 600
-content=$(curl -s "cip.cc")  
-# 使用grep命令检测是否包含“上海”这个关键词  
-if echo "$content" | grep -q "上海"; then  
-    echo "疑似使用通用流量" 
-    deadline
-fi
-
-done
-}
 
 updata_geoip() {
  # 更新geoip
@@ -84,11 +72,11 @@ updata_geoip() {
       echo 更新规则文件 >>/data/xray/日志.txt
       curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://raw.github.com/Loyalsoldier/geoip/release/cn.dat 
       mv tmp.dat /data/xray/核心/geoip.dat
-      curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
+      curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://githubfast.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat 
       mv tmp.dat /data/xray/核心/geosite.dat
       echo 规则文件更新完毕 >>/data/xray/日志.txt
 
-      curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/makeconfig.bin
+      curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://githubfast.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/makeconfig.bin
       mv tmp.dat /data/xray/核心/makeconfig.bin
       
       sh /data/xray/节点订阅.sh    
