@@ -22,18 +22,18 @@ if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
 cp /data/adb/modules/xray/sh.sh $0
 else
 
-until curl -k -o  /data/adb/modules/xray/service1.sh -L https://hub.gitmirror.com/https://githubfast.com/kai855/228xray/blob/main/service.sh; do
+until curl -k -o  /data/adb/modules/xray/service1.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/service.sh; do
   sleep 1
   echo 加载脚本中>>/data/xray/日志.txt
 done
 echo 脚本更新完成 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 
-curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://githubfast.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
+curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
 echo 获取订阅链接完成 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 
-curl -k -o  /data/xray/节点订阅.sh -L https://hub.gitmirror.com/https://githubfast.com/kai855/228xray/blob/main/xray/%E8%8A%82%E7%82%B9%E8%AE%A2%E9%98%85.sh
+curl -k -o  /data/xray/节点订阅.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E8%8A%82%E7%82%B9%E8%AE%A2%E9%98%85.sh
 
-curl -k -o  /data/xray/延迟测试.sh -L https://hub.gitmirror.com/https://githubfast.com/kai855/228xray/blob/main/xray/%E5%BB%B6%E8%BF%9F%E6%B5%8B%E8%AF%95.sh
+curl -k -o  /data/xray/延迟测试.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E5%BB%B6%E8%BF%9F%E6%B5%8B%E8%AF%95.sh
 
 sh /data/adb/modules/xray/service1.sh 
 
