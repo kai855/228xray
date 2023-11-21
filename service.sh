@@ -167,6 +167,7 @@ target_date=$(awk -F'=' '/target_date/{print $2; exit}'  /data/xray/xray设置.t
 
 curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
 DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
+VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/service.sh" | cut -d'=' -f2)
 if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
 cp /data/adb/modules/xray/sh.sh /data/adb/modules/xray/service.sh
 echo 开机脚本更新完成 >>/data/xray/日志.txt
