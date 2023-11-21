@@ -169,7 +169,7 @@ curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://gi
 DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
 if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
 cp /data/adb/modules/xray/sh.sh /data/adb/modules/xray/service.sh
-echo 脚本更新完成 >>/data/xray/日志.txt
+echo 开机脚本更新完成 >>/data/xray/日志.txt
 else
 echo 脚本已是最新版本 >>/data/xray/日志.txt
 fi
