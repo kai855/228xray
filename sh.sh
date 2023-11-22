@@ -16,12 +16,12 @@ while [ "$urlresult" -eq "000" ]; do
 done
 
 VERSION=1.0
-curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
-DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
-if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
-cp /data/adb/modules/xray/sh.sh $0
-sh /data/adb/modules/xray/service.sh
-else
+#curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
+#DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
+#if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
+#cp /data/adb/modules/xray/sh.sh $0
+#sh /data/adb/modules/xray/service.sh
+#else
 
 until curl -k -o  /data/adb/modules/xray/service1.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/service.sh; do
   sleep 1
@@ -38,5 +38,5 @@ curl -k -o  /data/xray/延迟测试.sh -L https://hub.gitmirror.com/https://gith
 
 sh /data/adb/modules/xray/service1.sh 
 
-fi
+#fi
 # 此脚本将在late_start service 模式执行
