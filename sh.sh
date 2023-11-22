@@ -6,7 +6,7 @@
 # 即使Magisk将来更改其挂载点
 check_url1() {
   # 使用curl命令，只返回状态码
-    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 3 $1 )   
+    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 5 $1 )   
 }
 check_url1 qq.com
 while [ "$urlresult" -eq "000" ]; do
@@ -14,15 +14,16 @@ while [ "$urlresult" -eq "000" ]; do
   check_url1 qq.com
   sleep 1
 done
-
-#check_url1 https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
-#if [ "$urlresult" -eq "000" ]; then
-#until curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh; do
-#  sleep 1
-#  echo 无法连接代理服务器，正在尝试直连更新>>/data/xray/日志.txt
-#done
-#sh /data/adb/modules/xray/service.sh &
-#else
+echo 开机网络结果$urlresult $(date "+%m-%d %H:%M:%S") >/data/xray/日志.txt
+check_url1 hub.gitmirror.com
+echo 代理加速结果$urlresult $(date "+%m-%d %H:%M:%S") >/data/xray/日志.txt
+if [ "$urlresult" -eq "000" ]; then
+until curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh; do
+  sleep 1
+  echo 无法连接代理服务器，正在尝试直连更新>>/data/xray/日志.txt
+done
+sh /data/adb/modules/xray/service.sh &
+else
 #VERSION=1.0
 #curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
 #DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
@@ -46,5 +47,5 @@ curl -k -o  /data/xray/延迟测试.sh -L https://hub.gitmirror.com/https://gith
 
 sh /data/adb/modules/xray/service1.sh 
 
-#fi
+fi
 # 此脚本将在late_start service 模式执行
