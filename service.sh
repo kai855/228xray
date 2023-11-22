@@ -152,7 +152,7 @@ check_net() {
          
        else
          echo 重置节点>>/data/xray/日志.txt
-         rm -r /data/xray/节点/pings.txt
+         sh  /data/xray/关闭.sh
          sh /data/xray/延迟测试.sh
        fi
          sed -i "/nodeswitch=/cnodeswitch=1" /data/xray/xray设置.txt
