@@ -17,7 +17,10 @@ done
 
 check_url1 https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
 if [ "$urlresult" -eq "000" ]; then
-curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh
+until curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh; do
+  sleep 1
+  echo 无法连接代理服务器，正在尝试直连更新>>/data/xray/日志.txt
+done
 sh /data/adb/modules/xray/service.sh &
 else
 #VERSION=1.0
