@@ -18,7 +18,7 @@ echo 开机网络结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.
 check_url1 hub.gitmirror.com
 echo 代理加速结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 if [ "$urlresult" -eq "000" ]; then
-until curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh; do
+until curl -k -o  /data/adb/modules/xray/service.sh -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/kai855/228xray/main/sh.sh; do
   sleep 1
   echo 无法连接代理服务器，正在尝试直连更新>>/data/xray/日志.txt
 done
