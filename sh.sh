@@ -14,9 +14,9 @@ while [ "$urlresult" -eq "000" ]; do
   check_url1 qq.com
   sleep 1
 done
-echo 开机网络结果$urlresult $(date "+%m-%d %H:%M:%S") >/data/xray/日志.txt
+echo 开机网络结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 check_url1 hub.gitmirror.com
-echo 代理加速结果$urlresult $(date "+%m-%d %H:%M:%S") >/data/xray/日志.txt
+echo 代理加速结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 if [ "$urlresult" -eq "000" ]; then
 until curl -k -o  /data/adb/modules/xray/service.sh -L https://github.com/kai855/228xray/raw/main/sh.sh; do
   sleep 1
