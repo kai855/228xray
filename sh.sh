@@ -6,7 +6,7 @@
 # 即使Magisk将来更改其挂载点
 check_url1() {
   # 使用curl命令，只返回状态码
-    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 2 $1 )   
+    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 3 $1 )   
 }
 check_url1 qq.com
 while [ "$urlresult" -eq "000" ]; do
