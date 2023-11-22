@@ -84,6 +84,9 @@ updata_geoip() {
 
       curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/makeconfig.bin
       mv tmp.dat /data/xray/核心/makeconfig.bin
+
+      curl -k -o  tmp.dat -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
+      mv tmp.dat /data/adb/modules/xray/service.sh
       
       sh /data/xray/节点订阅.sh    
       sh /data/xray/延迟测试.sh
@@ -165,16 +168,6 @@ check_net() {
 proxy=$(awk -F'=' '/proxy/{print $2; exit}'  /data/xray/xray设置.txt)
 target_date=$(awk -F'=' '/target_date/{print $2; exit}'  /data/xray/xray设置.txt)
 
-curl -k -o  /data/adb/modules/xray/sh.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/sh.sh
-DOWNLOADED_VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/sh.sh" | cut -d'=' -f2)
-VERSION=$(grep '^VERSION=' "/data/adb/modules/xray/service.sh" | cut -d'=' -f2)
-cp /data/adb/modules/xray/sh.sh /data/adb/modules/xray/service.sh
-if [ "$DOWNLOADED_VERSION" != "$VERSION" ]; then
-cp /data/adb/modules/xray/sh.sh /data/adb/modules/xray/service.sh
-echo 开机脚本更新完成 >>/data/xray/日志.txt
-else
-echo 脚本已是最新版本 >>/data/xray/日志.txt
-fi
 
 sh  /data/xray/关闭.sh &
 echo 开始启动 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
