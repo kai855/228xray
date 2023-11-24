@@ -123,7 +123,7 @@ done
 check_url() {
   # 使用curl命令，只返回状态码
   
-local urls=("$url1" "$url2" "$url3" "$url4")
+    urls=("$url1" "$url2" "$url3" "$url4")
 
     # 遍历URL数组
     for url in "${urls[@]}"; do
