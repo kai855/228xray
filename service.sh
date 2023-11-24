@@ -123,20 +123,24 @@ done
 check_url() {
   # 使用curl命令，只返回状态码
   
-  attempt=1
-  while [[ $attempt -le 4 ]]
-do
-    eval "url=\$url$attempt"
-    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 2 $url )
-    # 检查HTTP响应代码是否成功
-    if [[ $urlresult -eq 000 ]]; then       
-        #sleep 1
-        attempt=$((attempt+1))
-        
-    else break
-    fi
-done
-  echo 测试$url结果$urlresult $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
+local urls=("$url1" "$url2" "$url3")
+
+    # 遍历URL数组
+    for url in "${urls[@]}"; do
+        # 使用curl命令，只返回状态码
+        local urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}" -m 2 "$url")
+
+        # 记录日志
+        echo "测试$url结果$urlresult $(date "+%m-%d %H:%M:%S")" >>/data/xray/日志.txt
+
+        # 检查HTTP响应代码是否成功
+        if [[ $urlresult -ne 000 ]]; then
+            # 成功连接至URL，退出循环
+            break
+        fi
+
+        # 如果连接失败，则继续尝试下一个URL
+    done
     
 }
 
