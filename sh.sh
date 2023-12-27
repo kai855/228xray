@@ -38,8 +38,8 @@ until curl -k -o  /data/adb/modules/xray/service1.sh -L https://hub.gitmirror.co
 done
 echo 脚本更新完成 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 
-curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
-echo 获取订阅链接完成 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
+#curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
+#echo 获取订阅链接完成 $(date "+%m-%d %H:%M:%S") >>/data/xray/日志.txt
 
 curl -k -o  /data/xray/节点订阅.sh -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E8%8A%82%E7%82%B9%E8%AE%A2%E9%98%85.sh
 
