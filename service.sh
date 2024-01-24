@@ -101,7 +101,7 @@ rm -r *
 echo_magisk 当前已到期或者走通用 内延迟：999，外延迟:999
 
 while true; do
- urlresult=$(curl -s -o /dev/null -w "%{http_code}"  -m 2 "baidu.com")
+ urlresult=$(curl -s -o /dev/null -w "%{http_code}"  -m 5 "baidu.com")
  if [ "$urlresult" -ne 000 ]; then
    echo -e "addr=\"192.168.199.199:801\"
    uuid=\"123456789\"
