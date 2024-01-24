@@ -18,7 +18,7 @@ echo_magisk() {
 }
 
 start_v2() {
-sh  /data/xray/关闭.sh &
+#sh  /data/xray/关闭.sh &
 
 
  # 开启v2
