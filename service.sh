@@ -127,7 +127,7 @@ check_url() {
   while [[ $attempt -le 4 ]]
 do
     eval "url=\$url$attempt"
-    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 2 $url )
+    urlresult=$(curl -s --retry-connrefused -o /dev/null -w "%{http_code}"  -m 5 $url )
     # 检查HTTP响应代码是否成功
     if [[ $urlresult -eq 000 ]]; then       
         #sleep 1
