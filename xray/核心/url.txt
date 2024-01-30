@@ -1,4 +1,4 @@
-url1=https://v.id9.cc/sub?target=v2ray&url=https%3A%2F%2Fnachoneko.azurefd.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D861492689135bb39ceafca5965954035&insert=false&config=https%3A%2F%2Fraw.github.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
+url1=https://api.v1.mk/sub?target=v2ray&url=https%3A%2F%2F10086-vpn.xyz%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D076cc65a70a10d6af89dd8a3500916c9&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
 
 url2=https://v.id9.cc/sub?target=v2ray&url=https%3A%2F%2Fwww.pigfarmcloud.com%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3D2cc609ab1bf1f33ea626e4e9ce7a46f1&insert=false&config=https%3A%2F%2Fraw.github.com%2FMeilieage%2Fwebcdn%2Fmain%2Frule%2FArea_Media_NoAuto.ini&sort=true&emoji=true&list=true&udp=true&tfo=false&expand=true&scv=true&fdn=true
 
