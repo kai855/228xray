@@ -436,7 +436,7 @@ echo "{
       },
       {
         \"type\": \"field\",
-        \"outboundTag\": \"black\",
+        \"outboundTag\": \"direct\",
         \"domain\": [\"hub.gitmirror.com\"]
       }`getRuleObj`
     ]
