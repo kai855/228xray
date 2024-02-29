@@ -6,23 +6,23 @@ get_key(){
 }
 
 cd /data/xray
-rm -r 节点
-mkdir 节点
+rm -r tmp
+mkdir tmp
 
 
 
 
 updata_node(){
-until  curl -k -o  /data/xray/节点/link -L $1; do
+until  curl -k -o  /data/xray/tmp/link -L $1; do
 
   echo "${green}连接失败，重试中....${plain}"
   echo 连接失败，重试中>>/data/xray/日志.txt
   sleep 1
 done
 
-if grep -q "vmess" /data/xray/节点/link; then
-     mv -f /data/xray/节点/link /data/xray/节点/vm
-else  base64 -d /data/xray/节点/link > /data/xray/节点/vm
+if grep -q "vmess" /data/xray/tmp/link; then
+     mv -f /data/xray/tmp/link /data/xray/tmp/vm
+else  base64 -d /data/xray/tmp/link > /data/xray/tmp/vm
 fi
 echo -e "${green}创建节点中${plain}"
 
@@ -63,11 +63,11 @@ type=\"$Type\"
 path=\"$path\"
 host=\"$host\"
 DNS=\"223.5.5.5\"
-" > /data/xray/节点/$2$node_name.ini
+" > /data/xray/tmp/$2$node_name.ini
 echo 获取节点$node_name 
 fi
 fi )&
-done < /data/xray/节点/vm
+done < /data/xray/tmp/vm
 
 wait
 }
@@ -132,5 +132,15 @@ if [[ $url == *"|"* ]]; then
 else updata_node $url 
 fi
 
-echo -e "${green}------订阅完成------${plain}"
-echo 订阅完成>> /data/xray/日志.txt
+
+if ls /data/xray/tmp/*.ini 1> /dev/null 2>&1; then
+    # 如果存在ini格式文件，将tmp文件夹重命名为节点
+    rm -r 节点
+    mv /data/xray/tmp /data/xray/节点
+    echo 订阅完成>> /data/xray/日志.txt
+    echo -e "${green}------订阅完成------${plain}"
+else
+    echo 订阅失败>> /data/xray/日志.txt
+fi
+
+
