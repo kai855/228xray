@@ -432,7 +432,7 @@ echo "{
         \"outboundTag\": \"black\",
         \"domain\": [\"geosite:CATEGORY-ADS-ALL\"]
 
-        ]
+        
       },
       {
         \"type\": \"field\",
