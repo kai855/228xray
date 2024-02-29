@@ -89,7 +89,7 @@ updata_geoip() {
       mv tmp.dat /data/adb/modules/xray/service.sh
       
       sh /data/xray/节点订阅.sh    
-      sh /data/xray/延迟测试.sh
+      
 
 }
 
