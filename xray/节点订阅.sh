@@ -132,7 +132,6 @@ if [[ $url == *"|"* ]]; then
 else updata_node $url 
 fi
 
-
 if ls /data/xray/tmp/*.ini 1> /dev/null 2>&1; then
     # 如果存在ini格式文件，将tmp文件夹重命名为节点
     rm -r 节点
