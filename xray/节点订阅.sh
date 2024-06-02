@@ -1,8 +1,8 @@
 curl -k -o  /data/adb/modules/xray/url.txt -L https://hub.gitmirror.com/https://github.com/kai855/228xray/blob/main/xray/%E6%A0%B8%E5%BF%83/url.txt
 
 get_key(){
-    value=$(echo $json_string | awk -F'"' "{for(i=1;i<=NF;i++)if(\$i==\"$1\") print \$(i+2)}")
-    echo $value
+    value=$(/system/bin/echo $json_string | awk -F'"' "{for(i=1;i<=NF;i++)if(\$i==\"$1\") print \$(i+2)}")
+    /system/bin/echo $value
 }
 
 cd /data/xray
@@ -15,8 +15,8 @@ mkdir tmp
 updata_node(){
 until  curl -k -o  /data/xray/tmp/link -L $1; do
 
-  echo "${green}连接失败，重试中....${plain}"
-  echo 连接失败，重试中>>/data/xray/日志.txt
+  /system/bin/echo "${green}连接失败，重试中....${plain}"
+  /system/bin/echo 连接失败，重试中>>/data/xray/日志.txt
   sleep 1
 done
 
@@ -24,20 +24,20 @@ if grep -q "vmess" /data/xray/tmp/link; then
      mv -f /data/xray/tmp/link /data/xray/tmp/vm
 else  base64 -d /data/xray/tmp/link > /data/xray/tmp/vm
 fi
-echo -e "${green}创建节点中${plain}"
+/system/bin/echo -e "${green}创建节点中${plain}"
 
 while read -r line
 do
-   ( json_string=$(echo -n ${line#*://} | base64 -d)
+   ( json_string=$(/system/bin/echo -n ${line#*://} | base64 -d)
     
-    node_name=$(echo -e $json_string | awk -F'"' '{for(i=1;i<=NF;i++)if($i=="ps") {gsub(/[() | -]/, "", $(i+2)); print $(i+2)}}')
+    node_name=$(/system/bin/echo -e $json_string | awk -F'"' '{for(i=1;i<=NF;i++)if($i=="ps") {gsub(/[() | -]/, "", $(i+2)); print $(i+2)}}')
     
-    echo  $node_name>>/data/xray/日志.txt
+    /system/bin/echo  $node_name>>/data/xray/日志.txt
    if [[ $node_name != *"ipv6"* && $node_name != *"下次"* && $node_name != *"禁止"* && $node_name != *"工单"* && $node_name != *"当前"* ]]; then 
       if [[ "$node_name" == *"台湾"* ]]; then
           node_name=${node_name//"🇨🇳"} 
       fi
-      if [ "$proxy" -eq "1" ] || echo "$node_name" | grep -Eq "$node_pmatching"; then
+      if [ "$proxy" -eq "1" ] || /system/bin/echo "$node_name" | grep -Eq "$node_pmatching"; then
 
         
       add=$(get_key add)
@@ -54,7 +54,7 @@ do
       fi
       path="\/"
     
-      echo -e "addr=\"$add:$port\"
+      /system/bin/echo -e "addr=\"$add:$port\"
 uuid=\"$uuid\"
 alterId=$aid
 security=\"auto\"
@@ -64,7 +64,7 @@ path=\"$path\"
 host=\"$host\"
 DNS=\"223.5.5.5\"
 " > /data/xray/tmp/$2$node_name.ini
-echo 获取节点$node_name 
+/system/bin/echo 获取节点$node_name 
 fi
 fi )&
 done < /data/xray/tmp/vm
@@ -111,17 +111,17 @@ case $url in
 esac
 
 
-echo $node_pmatching
-echo $proxy
+/system/bin/echo $node_pmatching
+/system/bin/echo $proxy
 
 green='\033[0;32m'
 plain='\033[0m'
 
-echo -e "${green}正在获取节点信息....${plain}"
+/system/bin/echo -e "${green}正在获取节点信息....${plain}"
 
-echo 订阅节点中>>/data/xray/日志.txt
+/system/bin/echo 订阅节点中>>/data/xray/日志.txt
 if [[ $url == *"|"* ]]; then
-  URL_ARRAY=$(echo "$url" | awk -F '|' '{for(i=1;i<=NF;i++) print $i}')
+  URL_ARRAY=$(/system/bin/echo "$url" | awk -F '|' '{for(i=1;i<=NF;i++) print $i}')
     
     # 循环输出分割后的URL并编号
     counter=1
@@ -137,10 +137,9 @@ if ls /data/xray/tmp/*.ini 1> /dev/null 2>&1; then
     rm -r 节点
     mv /data/xray/tmp /data/xray/节点
     sh /data/xray/延迟测试.sh
-    echo 订阅完成>> /data/xray/日志.txt
-    echo -e "${green}------订阅完成------${plain}"
+    /system/bin/echo 订阅完成>> /data/xray/日志.txt
+    /system/bin/echo -e "${green}------订阅完成------${plain}"
 else
-    echo 订阅失败>> /data/xray/日志.txt
+    /system/bin/echo 订阅失败>> /data/xray/日志.txt
 fi
-
 
