@@ -1,4 +1,4 @@
-url1=https://fhfdf.ghkjfgjkdfghrjfghjvbnm.cfd/api/v1/client/subscribe?token=79540cccadfd4cd4f029b699636ef007&flag=v2ray
+url1=https://jcdrytd.ghkjfgjkdfghrjfghjvbnm.cfd/api/v1/client/subscribe?token=79540cccadfd4cd4f029b699636ef007
 
 url2=https://xtls.rprx.vision/api/v1/client/subscribe?token=02034b23af5a70f14815ab3a7ea0159f
 
