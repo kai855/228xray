@@ -7,7 +7,7 @@ url4=https://clashapi.rokeyyan.com/sub?target=v2ray&url=https%3a%2f%2fgawrgura.m
 
 url5=https://jcdrytd.ghkjfgjkdfghrjfghjvbnm.cfd/api/v1/client/subscribe?token=79540cccadfd4cd4f029b699636ef007|https://xtls.rprx.vision/api/v1/client/subscribe?token=02034b23af5a70f14815ab3a7ea0159f
 
-url6=https://ghproxy.com/https://usercontent.githubfast.com/raw/kai855/228xray/main/xray/%E6%A0%B8%E5%BF%83/6.txt|https://nachoneko.cn/api/v1/client/subscribe?token=cdcabf02b3794ec40773e48101ba2600&flag=v2ray
+url6=https://carpetpacific.com/blanket/api/v1/client/subscribe?token=24e497ab71d793110374c3e09e67be98
 
 url98=https://ghproxy.com/https://usercontent.githubfast.com/raw/kai855/228xray/main/xray/%E6%A0%B8%E5%BF%83/98.txt
 
